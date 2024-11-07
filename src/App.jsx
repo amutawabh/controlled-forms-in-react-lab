@@ -1,35 +1,47 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// src/App.jsx
+import { useState } from "react";
+import "./App.css";
+import Bookshelf from "./component/Bookshelf";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [newBook, setNewBook] = useState({
+    title: '',
+    author: '',
+  });
+  const [books, setBooks] = useState([
+    { title: "Fourth Wing", author: "Rebecca Yarros" },
+    { title: "The Lion, the Witch and the Wardrobe", author: "C.S. Lewis" },
+  ]);
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    const changeBook = {
+      ...newBook,
+      [name]: value,
+    };
+    setNewBook(changeBook);
+  };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setBooks((prevBooks) => [...prevBooks, newBook]);
+    setNewBook({
+      title: "",
+      author: "",
+    });
+  };
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h1>My Bookshelf</h1>
+      <Bookshelf
+        handleSubmit={handleSubmit}
+        handleInputChange={handleInputChange}
+        books={books}
+        setBooks={setBooks}
+        newBook={newBook}
+        setNewBook={setNewBook}
+      />
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
